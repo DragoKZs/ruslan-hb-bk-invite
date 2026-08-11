@@ -4,9 +4,10 @@ import { useState } from "react";
 import {
   User,
   Briefcase,
-  Building2,
+  MessageCircle,
   CheckCircle2,
   Loader2,
+  PartyPopper,
 } from "lucide-react";
 
 import { useLanguage } from "@/app/components/context/LanguageContext";
@@ -28,7 +29,7 @@ export default function Registration() {
   const [success, setSuccess] = useState(false);
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     setForm({
       ...form,
@@ -36,9 +37,7 @@ export default function Registration() {
     });
   }
 
-  async function handleSubmit(
-    e: React.FormEvent
-  ) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (
@@ -78,151 +77,208 @@ export default function Registration() {
     }
   }
 
-  const fields = [
-    {
-      name: "fullname",
-      icon: User,
-      label: t.registration.fullname,
-      placeholder: t.registration.fullnamePlaceholder,
-    },
-    {
-      name: "position",
-      icon: Briefcase,
-      label: t.registration.position,
-      placeholder: t.registration.positionPlaceholder,
-    },
-    {
-      name: "department",
-      icon: Building2,
-      label: t.registration.department,
-      placeholder: t.registration.departmentPlaceholder,
-    },
-  ];
-
   return (
-    <section id="registration" className="py-28">
-      <div className="container">
+    <section
+      id="registration"
+      className="relative overflow-hidden bg-[#09050D] py-16 md:py-32"
+    >
+      {/* Фоновые свечения */}
+
+      <div className="pointer-events-none absolute left-[-120px] top-20 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-3xl" />
+
+      <div className="pointer-events-none absolute bottom-10 right-[-120px] h-72 w-72 rounded-full bg-purple-600/10 blur-3xl" />
+
+      <div className="container relative z-10">
         <div className="mx-auto max-w-3xl">
 
-          <div className="mb-14 text-center">
+          {/* Заголовок */}
 
-            <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-2 text-sm uppercase tracking-[4px] text-blue-400">
+          <div className="mb-10 text-center md:mb-14">
+
+            <span className="inline-flex rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-xs uppercase tracking-[3px] text-fuchsia-300 md:px-5 md:text-sm md:tracking-[4px]">
               {t.registration.badge}
             </span>
 
-            <h2 className="mt-8 text-5xl font-black uppercase">
+            <h2 className="mt-6 text-3xl font-black uppercase md:mt-8 md:text-5xl">
               {t.registration.title}
             </h2>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/70">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/60 md:mt-6 md:text-lg">
               {t.registration.subtitle}
             </p>
 
           </div>
 
           {success ? (
-            <div className="rounded-3xl border border-blue-500/20 bg-white/5 p-16 text-center backdrop-blur-xl">
 
-              <CheckCircle2
-                size={90}
-                className="mx-auto text-blue-500"
-              />
+            /* Успешная отправка */
 
-              <h3 className="mt-8 text-4xl font-black">
-                {t.registration.successTitle}
-              </h3>
+            <motionSuccess
+              title={t.registration.successTitle}
+              text={t.registration.successText}
+            />
 
-              <p className="mt-6 whitespace-pre-line text-lg leading-8 text-white/70">
-                {t.registration.successText}
-              </p>
-
-            </div>
           ) : (
+
+            /* Форма */
+
             <form
               onSubmit={handleSubmit}
-              className="rounded-[40px] border border-white/10 bg-white/5 p-10 backdrop-blur-2xl"
+              className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.045] p-6 shadow-[0_25px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl md:rounded-[40px] md:p-10"
             >
-              <div className="space-y-8">
 
-                {fields.map((field) => {
-                  const Icon = field.icon;
+              {/* Декоративный элемент */}
 
-                  return (
-                    <div key={field.name}>
+              <div className="pointer-events-none absolute right-6 top-6 text-amber-200/30">
+                <SparklesIcon />
+              </div>
 
-                      <label className="mb-3 flex items-center gap-3 text-sm uppercase tracking-[3px] text-white/60">
+              <div className="space-y-7 md:space-y-8">
 
-                        <Icon
-                          size={18}
-                          className="text-blue-400"
-                        />
-
-                        {field.label}
-
-                      </label>
-
-                      <input
-                        type="text"
-                        name={field.name}
-                        value={form[field.name as keyof typeof form]}
-                        onChange={handleChange}
-                        placeholder={field.placeholder}
-                        className="w-full rounded-2xl border border-white/10 bg-[#0E1117] px-6 py-5 text-lg outline-none transition focus:border-blue-500"
-                      />
-
-                    </div>
-                  );
-                })}
+                {/* ФИО */}
 
                 <div>
 
-                  <label className="mb-4 flex items-center gap-3 text-sm uppercase tracking-[3px] text-white/60">
+                  <label className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
 
-                    {t.registration.attendanceTitle}
+                    <User
+                      size={18}
+                      className="text-fuchsia-300"
+                    />
+
+                    {t.registration.fullname}
 
                   </label>
 
-                  <div className="space-y-4">
+                  <input
+                    type="text"
+                    name="fullname"
+                    value={form.fullname}
+                    onChange={handleChange}
+                    placeholder={t.registration.fullnamePlaceholder}
+                    className="w-full rounded-2xl border border-white/10 bg-[#100916] px-5 py-4 text-base text-white outline-none transition placeholder:text-white/30 focus:border-fuchsia-400/50 focus:ring-1 focus:ring-fuchsia-400/20 md:px-6 md:py-5 md:text-lg"
+                  />
+
+                </div>
+
+                {/* Кто ты */}
+
+                <div>
+
+                  <label className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
+
+                    <Briefcase
+                      size={18}
+                      className="text-fuchsia-300"
+                    />
+
+                    {t.registration.position}
+
+                  </label>
+
+                  <input
+                    type="text"
+                    name="position"
+                    value={form.position}
+                    onChange={handleChange}
+                    placeholder={t.registration.positionPlaceholder}
+                    className="w-full rounded-2xl border border-white/10 bg-[#100916] px-5 py-4 text-base text-white outline-none transition placeholder:text-white/30 focus:border-fuchsia-400/50 focus:ring-1 focus:ring-fuchsia-400/20 md:px-6 md:py-5 md:text-lg"
+                  />
+
+                </div>
+
+                {/* Комментарий */}
+
+                <div>
+
+                  <label className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
+
+                    <MessageCircle
+                      size={18}
+                      className="text-fuchsia-300"
+                    />
+
+                    {t.registration.department}
+
+                  </label>
+
+                  <textarea
+                    name="department"
+                    value={form.department}
+                    onChange={handleChange}
+                    placeholder={t.registration.departmentPlaceholder}
+                    rows={3}
+                    className="w-full resize-none rounded-2xl border border-white/10 bg-[#100916] px-5 py-4 text-base text-white outline-none transition placeholder:text-white/30 focus:border-fuchsia-400/50 focus:ring-1 focus:ring-fuchsia-400/20 md:px-6 md:py-5 md:text-lg"
+                  />
+
+                </div>
+
+                {/* Подтверждение */}
+
+                <div>
+
+                  <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
+
+                    <PartyPopper
+                      size={18}
+                      className="text-amber-200"
+                    />
+
+                    {t.registration.attendanceTitle}
+
+                  </div>
+
+                  <div className="grid gap-3 sm:grid-cols-2">
+
+                    {/* Буду */}
 
                     <label
-                      className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-5 transition-all ${form.attendance === "confirm"
-                        ? "border-blue-500 bg-blue-500/10"
-                        : "border-white/10 bg-[#0E1117] hover:border-blue-500"
-                        }`}
+                      className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-5 transition ${
+                        form.attendance === "С радостью буду! 🎉"
+                          ? "border-fuchsia-400/60 bg-fuchsia-500/10 shadow-[0_0_30px_rgba(217,70,239,.10)]"
+                          : "border-white/10 bg-white/[0.03] hover:border-fuchsia-400/30 hover:bg-white/[0.05]"
+                      }`}
                     >
 
                       <input
                         type="radio"
                         name="attendance"
-                        value="Сможет"
-                        checked={form.attendance === "Сможет"}
+                        value="С радостью буду! 🎉"
+                        checked={
+                          form.attendance === "С радостью буду! 🎉"
+                        }
                         onChange={handleChange}
-                        className="mt-1 h-5 w-5 accent-blue-500"
+                        className="h-5 w-5 shrink-0 accent-fuchsia-500"
                       />
 
-                      <span className="leading-7">
+                      <span className="text-sm leading-6 md:text-base">
                         {t.registration.attendanceConfirm}
                       </span>
 
                     </label>
 
+                    {/* Не буду */}
+
                     <label
-                      className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-5 transition-all ${form.attendance === "decline"
-                        ? "border-blue-500 bg-blue-500/10"
-                        : "border-white/10 bg-[#0E1117] hover:border-blue-500"
-                        }`}
+                      className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-5 transition ${
+                        form.attendance === "К сожалению, не смогу 😢"
+                          ? "border-white/30 bg-white/[0.06]"
+                          : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
+                      }`}
                     >
 
                       <input
                         type="radio"
                         name="attendance"
-                        value="Не сможет"
-                        checked={form.attendance === "Не сможет"}
+                        value="К сожалению, не смогу 😢"
+                        checked={
+                          form.attendance === "К сожалению, не смогу 😢"
+                        }
                         onChange={handleChange}
-                        className="mt-1 h-5 w-5 accent-blue-500"
+                        className="h-5 w-5 shrink-0 accent-fuchsia-500"
                       />
 
-                      <span className="leading-7">
+                      <span className="text-sm leading-6 text-white/80 md:text-base">
                         {t.registration.attendanceDecline}
                       </span>
 
@@ -232,30 +288,81 @@ export default function Registration() {
 
                 </div>
 
+                {/* Кнопка */}
+
                 <button
                   type="submit"
                   disabled={loading}
-                  className="mt-6 flex w-full items-center justify-center rounded-2xl bg-blue-600 py-5 text-lg font-bold transition hover:bg-blue-500 disabled:opacity-70"
+                  className="mt-2 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-violet-600 py-4 text-base font-bold shadow-[0_15px_40px_rgba(217,70,239,.15)] transition hover:scale-[1.01] hover:shadow-[0_15px_50px_rgba(217,70,239,.25)] disabled:cursor-not-allowed disabled:opacity-60 md:py-5 md:text-lg"
                 >
+
                   {loading ? (
                     <>
                       <Loader2
                         size={22}
-                        className="mr-3 animate-spin"
+                        className="animate-spin"
                       />
+
                       {t.registration.loading}
                     </>
                   ) : (
-                    t.registration.button
+                    <>
+                      <PartyPopper size={21} />
+
+                      {t.registration.button}
+                    </>
                   )}
+
                 </button>
 
               </div>
+
             </form>
           )}
 
         </div>
       </div>
     </section>
+  );
+}
+
+/* Успешная отправка */
+
+function motionSuccess({
+  title,
+  text,
+}: {
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-[28px] border border-fuchsia-400/20 bg-white/[0.045] p-10 text-center shadow-[0_25px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl md:rounded-[40px] md:p-16">
+
+      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 md:h-24 md:w-24">
+
+        <CheckCircle2
+          size={52}
+          className="text-amber-200"
+        />
+
+      </div>
+
+      <h3 className="mt-7 text-3xl font-black md:mt-8 md:text-4xl">
+        {title}
+      </h3>
+
+      <p className="mt-5 whitespace-pre-line text-base leading-8 text-white/60 md:mt-6 md:text-lg">
+        {text}
+      </p>
+
+    </div>
+  );
+}
+
+function SparklesIcon() {
+  return (
+    <span className="text-2xl">
+      ✦
+    </span>
   );
 }

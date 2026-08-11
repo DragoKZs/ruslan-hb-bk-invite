@@ -8,8 +8,8 @@ const manrope = Manrope({
 });
 
 export const metadata = {
-  title: "Богатырь Комир",
-  description: "Форум сотрудников",
+  title: "День рождения Руслана 🎉",
+  description: "Приглашение на день рождения Руслана",
 };
 
 export default function RootLayout({
