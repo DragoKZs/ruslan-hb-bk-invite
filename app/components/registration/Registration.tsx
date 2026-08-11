@@ -113,7 +113,7 @@ export default function Registration() {
 
             /* Успешная отправка */
 
-            <motionSuccess
+            <MotionSuccess
               title={t.registration.successTitle}
               text={t.registration.successText}
             />
@@ -328,7 +328,7 @@ export default function Registration() {
 
 /* Успешная отправка */
 
-function motionSuccess({
+function MotionSuccess({
   title,
   text,
 }: {
