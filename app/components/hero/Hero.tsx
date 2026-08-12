@@ -104,6 +104,10 @@ export default function Hero() {
 
             {t.hero.text2}
 
+            <br />
+
+            {t.hero.text3}
+
           </p>
 
           {/* Декоративные элементы */}

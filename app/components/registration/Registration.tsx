@@ -1,14 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import {
-  User,
-  Briefcase,
-  MessageCircle,
-  CheckCircle2,
-  Loader2,
-  PartyPopper,
-} from "lucide-react";
+import { User, MessageCircle, CheckCircle2, Loader2, PartyPopper } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { useLanguage } from "@/app/components/context/LanguageContext";
 
@@ -20,7 +14,6 @@ export default function Registration() {
 
   const [form, setForm] = useState({
     fullname: "",
-    position: "",
     department: "",
     attendance: "",
   });
@@ -40,12 +33,9 @@ export default function Registration() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (
-      !form.fullname ||
-      !form.position ||
-      !form.department ||
-      !form.attendance
-    ) {
+    // ФИО и участие обязательные.
+    // Комментарий — необязательный.
+    if (!form.fullname || !form.attendance) {
       alert(t.registration.validation);
       return;
     }
@@ -66,7 +56,6 @@ export default function Registration() {
 
       setForm({
         fullname: "",
-        position: "",
         department: "",
         attendance: "",
       });
@@ -113,10 +102,39 @@ export default function Registration() {
 
             /* Успешная отправка */
 
-            <MotionSuccess
-              title={t.registration.successTitle}
-              text={t.registration.successText}
-            />
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.5,
+              }}
+              className="rounded-[28px] border border-fuchsia-400/20 bg-white/[0.045] p-10 text-center shadow-[0_25px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl md:rounded-[40px] md:p-16"
+            >
+
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 md:h-24 md:w-24">
+
+                <CheckCircle2
+                  size={52}
+                  className="text-amber-200"
+                />
+
+              </div>
+
+              <h3 className="mt-7 text-3xl font-black md:mt-8 md:text-4xl">
+                {t.registration.successTitle}
+              </h3>
+
+              <p className="mt-5 whitespace-pre-line text-base leading-8 text-white/60 md:mt-6 md:text-lg">
+                {t.registration.successText}
+              </p>
+
+            </motion.div>
 
           ) : (
 
@@ -126,12 +144,6 @@ export default function Registration() {
               onSubmit={handleSubmit}
               className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.045] p-6 shadow-[0_25px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl md:rounded-[40px] md:p-10"
             >
-
-              {/* Декоративный элемент */}
-
-              <div className="pointer-events-none absolute right-6 top-6 text-amber-200/30">
-                <SparklesIcon />
-              </div>
 
               <div className="space-y-7 md:space-y-8">
 
@@ -161,44 +173,26 @@ export default function Registration() {
 
                 </div>
 
-                {/* Кто ты */}
-
-                <div>
-
-                  <label className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
-
-                    <Briefcase
-                      size={18}
-                      className="text-fuchsia-300"
-                    />
-
-                    {t.registration.position}
-
-                  </label>
-
-                  <input
-                    type="text"
-                    name="position"
-                    value={form.position}
-                    onChange={handleChange}
-                    placeholder={t.registration.positionPlaceholder}
-                    className="w-full rounded-2xl border border-white/10 bg-[#100916] px-5 py-4 text-base text-white outline-none transition placeholder:text-white/30 focus:border-fuchsia-400/50 focus:ring-1 focus:ring-fuchsia-400/20 md:px-6 md:py-5 md:text-lg"
-                  />
-
-                </div>
-
                 {/* Комментарий */}
 
                 <div>
 
-                  <label className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
+                  <label className="mb-3 flex items-center justify-between text-xs uppercase tracking-[2px] text-white/60 md:text-sm md:tracking-[3px]">
 
-                    <MessageCircle
-                      size={18}
-                      className="text-fuchsia-300"
-                    />
+                    <span className="flex items-center gap-3">
 
-                    {t.registration.department}
+                      <MessageCircle
+                        size={18}
+                        className="text-fuchsia-300"
+                      />
+
+                      {t.registration.department}
+
+                    </span>
+
+                    <span className="normal-case tracking-normal text-white/30">
+                      {t.registration.optional}
+                    </span>
 
                   </label>
 
@@ -213,7 +207,7 @@ export default function Registration() {
 
                 </div>
 
-                {/* Подтверждение */}
+                {/* Участие */}
 
                 <div>
 
@@ -230,7 +224,7 @@ export default function Registration() {
 
                   <div className="grid gap-3 sm:grid-cols-2">
 
-                    {/* Буду */}
+                    {/* Сможет */}
 
                     <label
                       className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-5 transition ${
@@ -257,7 +251,7 @@ export default function Registration() {
 
                     </label>
 
-                    {/* Не буду */}
+                    {/* Не сможет */}
 
                     <label
                       className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-5 transition ${
@@ -323,46 +317,5 @@ export default function Registration() {
         </div>
       </div>
     </section>
-  );
-}
-
-/* Успешная отправка */
-
-function MotionSuccess({
-  title,
-  text,
-}: {
-  title: string;
-  text: string;
-}) {
-  return (
-    <div className="relative overflow-hidden rounded-[28px] border border-fuchsia-400/20 bg-white/[0.045] p-10 text-center shadow-[0_25px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl md:rounded-[40px] md:p-16">
-
-      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 md:h-24 md:w-24">
-
-        <CheckCircle2
-          size={52}
-          className="text-amber-200"
-        />
-
-      </div>
-
-      <h3 className="mt-7 text-3xl font-black md:mt-8 md:text-4xl">
-        {title}
-      </h3>
-
-      <p className="mt-5 whitespace-pre-line text-base leading-8 text-white/60 md:mt-6 md:text-lg">
-        {text}
-      </p>
-
-    </div>
-  );
-}
-
-function SparklesIcon() {
-  return (
-    <span className="text-2xl">
-      ✦
-    </span>
   );
 }
