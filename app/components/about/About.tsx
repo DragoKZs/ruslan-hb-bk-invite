@@ -1,21 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Music2,
-  Sparkles,
-  Gift,
-  Users,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import { useLanguage } from "@/app/components/context/LanguageContext";
-
-const icons = [
-  Music2,
-  Sparkles,
-  Gift,
-  Users,
-];
 
 export default function About() {
   const { t } = useLanguage();
@@ -23,13 +11,21 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative bg-[#09050D] py-16 md:py-32"
+      className="relative overflow-hidden bg-[#09050D] py-16 md:py-32"
     >
+      {/* Декоративные свечения */}
+
+      <div className="pointer-events-none absolute left-[-120px] top-1/4 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-3xl" />
+
+      <div className="pointer-events-none absolute right-[-120px] bottom-1/4 h-72 w-72 rounded-full bg-purple-600/10 blur-3xl" />
+
       <div className="container">
 
-        <div className="grid items-center gap-10 md:gap-20 lg:grid-cols-2">
+        <div className="flex flex-col items-center">
 
-          {/* Фото */}
+          {/* ========================= */}
+          {/* ФОТО */}
+          {/* ========================= */}
 
           <motion.div
             initial={{
@@ -60,17 +56,17 @@ export default function About() {
 
             {/* Затемнение */}
 
-            <div className="absolute inset-0 rounded-[28px] bg-gradient-to-t from-[#09050D]/40 via-transparent to-transparent md:rounded-[40px]" />
+            <div className="absolute inset-0 rounded-[28px] bg-gradient-to-t from-[#09050D]/50 via-transparent to-transparent md:rounded-[40px]" />
 
-            {/* Золотой блик */}
+            {/* Декоративный элемент */}
 
-            <div className="pointer-events-none absolute right-6 top-6 flex h-12 w-12 items-center justify-center rounded-full border border-amber-300/30 bg-black/20 text-amber-200 backdrop-blur-md">
-              ✦
-            </div>
+
 
           </motion.div>
 
-          {/* Текст */}
+          {/* ========================= */}
+          {/* ТЕКСТ */}
+          {/* ========================= */}
 
           <motion.div
             initial={{
@@ -88,74 +84,6 @@ export default function About() {
               duration: 0.8,
             }}
           >
-
-            {/* Бейдж */}
-
-            <span className="inline-flex rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-xs uppercase tracking-[3px] text-fuchsia-300 md:px-5 md:text-sm md:tracking-[4px]">
-              {t.about.badge}
-            </span>
-
-            {/* Заголовок */}
-
-            <h2 className="mt-6 text-3xl font-black leading-tight md:mt-8 md:text-5xl">
-              {t.about.title}
-            </h2>
-
-            {/* Текст */}
-
-            <p className="mt-6 text-base leading-8 text-white/70 md:mt-8 md:text-lg md:leading-9">
-
-              {t.about.text1}
-
-              <br />
-              <br />
-
-              {t.about.text2}
-
-            </p>
-
-            {/* Карточки */}
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 md:mt-14 md:gap-6">
-
-              {t.about.cards.map((card, index) => {
-
-                const Icon = icons[index];
-
-                return (
-                  <motion.div
-                    key={card.title}
-                    whileHover={{
-                      y: -8,
-                    }}
-                    transition={{
-                      duration: 0.25,
-                    }}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl md:p-7"
-                  >
-
-                    {/* Фиолетовое свечение */}
-
-                    <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-fuchsia-500/10 blur-2xl transition group-hover:bg-fuchsia-500/20" />
-
-                    <Icon
-                      size={32}
-                      className="relative z-10 text-amber-200 md:size-[34px]"
-                    />
-
-                    <h3 className="relative z-10 mt-4 text-lg font-bold md:mt-5 md:text-xl">
-                      {card.title}
-                    </h3>
-
-                    <p className="relative z-10 mt-2 flex-1 text-sm leading-6 text-white/60 md:mt-3 md:text-base md:leading-7">
-                      {card.text}
-                    </p>
-
-                  </motion.div>
-                );
-              })}
-
-            </div>
 
           </motion.div>
 

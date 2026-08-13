@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/app/components/context/LanguageContext";
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbz7vO-HDhbIGoHMIz49gHTS6W6AlCiupRdTV0x6w8MioP2ydgLWK9wTl_3LFgpmrOZuTg/exec";
+  "https://script.google.com/macros/s/AKfycbyEroW3U1WhDkwTAG2OcLtWi7XTtOXpC7rRYZ88N6eCmo6p1pQZ9wjACXEOaT5L5eHD-w/exec";
 
 export default function Registration() {
   const { t } = useLanguage();

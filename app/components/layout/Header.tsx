@@ -36,10 +36,6 @@ export default function Header() {
     },
     {
       title: t.header.menu[2],
-      href: "#location",
-    },
-    {
-      title: t.header.menu[3],
       href: "#registration",
     },
   ];
