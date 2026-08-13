@@ -84,10 +84,6 @@ export default function Footer() {
         <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-white/30 md:flex-row">
 
           <span>
-            {t.footer.place}
-          </span>
-
-          <span>
             {t.footer.copyright}
           </span>
 
